@@ -1,12 +1,12 @@
 <div align="center">
 
-# Custom Memory Allocator in C
+# Dynamic Memory Allocator in C
 
 ![C](https://img.shields.io/badge/C-99-blue.svg)
 ![Make](https://img.shields.io/badge/Make-Build-orange.svg)
 ![License](https://img.shields.io/badge/License-Academic-yellow.svg)
 
-**A custom heap-based memory allocator with dynamic allocation and coalescing**
+**A dynamic heap-based memory allocator with dynamic allocation and coalescing**
 
 [About](#about) • [Features](#features) • [Usage](#usage) • [Implementation](#implementation) • [Academic Context](#academic-context)
 
@@ -16,7 +16,7 @@
 
 ## About
 
-This project implements a **custom memory management system** from scratch in C, featuring dynamic allocation, deallocation, and automatic free block coalescing. Built as part of the LINFO1252 course at UCLouvain, this allocator provides a practical exploration of heap management, memory fragmentation, and allocation strategies.
+This project implements a **dynamic memory management system** from scratch in C, featuring dynamic allocation, deallocation, and automatic free block coalescing. Built as part of the LINFO1252 course at UCLouvain, this allocator provides a practical exploration of heap management, memory fragmentation, and allocation strategies.
 
 ### Core Concept
 
@@ -73,8 +73,8 @@ The allocator uses a **next-fit strategy** with metadata-driven block management
 
 ```bash
 # Clone the repository
-git clone https://github.com/mathisdelsart/Custom-MemoryAllocator.git
-cd Custom-MemoryAllocator
+git clone https://github.com/mathisdelsart/DynamicMemoryAllocator.git
+cd DynamicMemoryAllocator
 
 # Build and run
 make all
