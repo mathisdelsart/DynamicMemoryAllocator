@@ -1,3 +1,5 @@
+<div align="center">
+
 # Custom Memory Allocator in C
 
 ![C](https://img.shields.io/badge/C-99-blue.svg)
@@ -7,6 +9,8 @@
 **A custom heap-based memory allocator with dynamic allocation and coalescing**
 
 [About](#about) • [Features](#features) • [Usage](#usage) • [Implementation](#implementation) • [Academic Context](#academic-context)
+
+</div>
 
 ---
 

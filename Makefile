@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 TARGET = memory_management.out
 
 # Source files
-SRCS = memory_management.c
+SRCS = src/memory_management.c
 OBJS = $(SRCS:.c=.o)
 
 # Default target
@@ -18,7 +18,7 @@ build: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-%.o: %.c memory_management.h
+%.o: %.c src/memory_management.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Run the program
