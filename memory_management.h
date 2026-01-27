@@ -81,6 +81,6 @@ void my_free(void *pointer);
 * @param argv:     array of arguments
 * @return:         0 if the program has been executed successfully, 1 otherwise
 */
-int main(int argc, char *argv[]);
+int main(void);
 
 #endif /* MEMORY_MANAGEMENT_H */

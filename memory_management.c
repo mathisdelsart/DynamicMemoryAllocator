@@ -192,7 +192,7 @@ void my_free(void *pointer)
 
 /* Testing */
 
-int main(int argc, char *argv[])
+int main(void)
 {
     printf("Empty HEAP:\n");
     init();

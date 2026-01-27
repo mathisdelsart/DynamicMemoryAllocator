@@ -1,62 +1,155 @@
-# Dynamic Memory Allocation in C
+# Custom Memory Allocator in C
 
-## Description
+![C](https://img.shields.io/badge/C-99-blue.svg)
+![Make](https://img.shields.io/badge/Make-Build-orange.svg)
+![License](https://img.shields.io/badge/License-Academic-yellow.svg)
 
-Welcome to the project repository for the LINFO1252 course at UCLouvain, part of the Civil Engineering program in the field of computer science. This repository contains the source code for a simple memory management system implemented in C. The project focuses on dynamic memory allocation and deallocation using a custom heap structure. The memory manager includes functions for allocating and freeing memory, along with helper functions for managing the internal heap.
+**A custom heap-based memory allocator with dynamic allocation and coalescing**
 
-### Project Details
-- **Grade:** 16/20 (Code: 10/10, Report: 6/10).
-- **Language:** C.
-- **Environment:** Linux.
-
-## Feedback Summary
-
-### Report Assessment
-- **Structure and Presentation:** Good.
-- **Content and Explanation:** Insufficient.
-  
-### Customized Comments
-- **Functionality of `multiblocs`:** The purpose of the `multiblocs` function is unclear. Further clarification on its role and functionality is needed for a more comprehensive understanding.
-
-- **Memory Release Strategy:** It is not evident whether the memory release strategy incorporates the merging of free blocks. Additional details on the approach taken for memory release, specifically regarding the merging of free blocks, would enhance the clarity of the implementation.
+[About](#about) • [Features](#features) • [Usage](#usage) • [Implementation](#implementation) • [Academic Context](#academic-context)
 
 ---
-*This feedback is provided to facilitate improvements in the report and enhance the overall understanding of the project.*
 
+## About
 
-## Memory Management
+This project implements a **custom memory management system** from scratch in C, featuring dynamic allocation, deallocation, and automatic free block coalescing. Built as part of the LINFO1252 course at UCLouvain, this allocator provides a practical exploration of heap management, memory fragmentation, and allocation strategies.
 
-The memory management system consists of a custom heap (`MY_HEAP`) with a fixed size (`HEAP_SIZE`). The heap is initialized with two metadata blocks, representing the nextfit offset and the size of the first free block. The project provides functions for allocating memory (`my_malloc`), freeing memory (`my_free`), and printing the state of the heap (`print_HEAP`).
+### Core Concept
 
-### Features
+```
+Memory Efficiency = minimize(fragmentation) + optimize(allocation_speed) + maximize(locality)
+```
 
-1. **Dynamic Memory Allocation**: The `my_malloc` function allocates a block of memory of the given size. It manages the heap to find a suitable free block and initializes the allocated block.
-
-2. **Memory Deallocation**: The `my_free` function frees a previously allocated block of memory. It updates the heap and may merge adjacent free blocks.
-
-3. **Printing Heap State**: The `print_HEAP` function prints the current state of the heap, displaying information about allocated and free blocks.
-
-### Testing
-
-The `main` function includes a series of test cases demonstrating the functionality of memory allocation and deallocation. It allocates and frees various-sized memory blocks and prints the heap state after each operation.
-
-## Makefile Commands
-
-The project includes a Makefile to simplify compilation and execution. Key commands include:
-
-- **`make`**: Uses `make build` and `make run`.
-- **`make build`**: Compiles the project and generates the executable `memory_management.out`.
-- **`make run`**: Executes the compiled program (`memory_management.out`).
-- **`make clean`**: Removes generated files and the executable.
-
-## Further Information
-
-For additional details on function parameters, return values, and specific implementation details, refer to the source code and header files.
-This memory management implementation is intentionally kept simple to serve as a learning tool for understanding the fundamental principles and trade-offs in dynamic memory allocation systems. The primary goal was to explore the balance between locality, fragmentation, and allocation speed. Please note that this is a basic implementation designed for educational purposes, emphasizing the foundational aspects of memory management.
-
-## Contributions
-
-Contributions, feedback, and suggestions are welcome. Feel free to share your thoughts and improvements.
+The allocator uses a **next-fit strategy** with metadata-driven block management to efficiently handle allocation requests while maintaining heap integrity through automatic coalescing of adjacent free blocks.
 
 ---
-*This project is part of a course at UCLouvain in the Civil Engineering program, focusing on computer science.*
+
+## Features
+
+### Memory Allocation System
+
+#### `my_malloc(size)`
+- **Next-fit allocation** with wraparound search
+- Automatic block splitting when oversized blocks are found
+- Metadata management (2-byte headers per block)
+- Returns pointer to usable memory region
+
+#### `my_free(ptr)`
+- Safe deallocation with boundary checking
+- **Automatic coalescing** of adjacent free blocks
+- Merges forward to reduce fragmentation
+- Updates allocation metadata
+
+#### `print_HEAP()`
+- Visual heap state inspector
+- Displays allocated vs. free blocks
+- Shows block sizes and locations
+- Debugging aid for memory visualization
+
+### Technical Specifications
+
+| **Property** | **Value** |
+|--------------|-----------|
+| Heap Size | 64,000 bytes |
+| Header Size | 2 bytes per block |
+| Allocation Strategy | Next-fit with coalescing |
+| Fragmentation Control | Forward block merging |
+
+---
+
+## Usage
+
+### Prerequisites
+
+- GCC compiler
+- Unix-like environment (Linux, macOS)
+- Make utility
+
+### Installation & Execution
+
+```bash
+# Clone the repository
+git clone https://github.com/mathisdelsart/Custom-MemoryAllocator.git
+cd Custom-MemoryAllocator
+
+# Build and run
+make all
+
+# Or step by step
+make build    # Compile only
+make run      # Execute the program
+make clean    # Remove generated files
+
+# View available commands
+make help
+```
+
+### Example Output
+
+The program runs a series of allocation and deallocation tests, printing the heap state after each operation:
+
+```
+========== Initial Heap State ==========
+Block 0: FREE (63996 bytes)
+
+========== After malloc(100) ==========
+Block 0: ALLOCATED (100 bytes)
+Block 102: FREE (63894 bytes)
+
+========== After free(ptr) ==========
+Block 0: FREE (63996 bytes)  [Coalesced]
+```
+
+---
+
+## Implementation
+
+### Architecture
+
+```
+memory-allocator/
+├── memory_management.c    # Core allocator implementation
+├── memory_management.h    # Public API and data structures
+├── Makefile              # Build automation
+├── README.md             # This file
+└── assets/               # Documentation resources
+    └── html_code/        # Heap state visualizations
+```
+
+### Key Algorithms
+
+#### Allocation (Next-Fit)
+
+```c
+1. Start from last allocation position (nextfit)
+2. Search for first adequate free block
+3. If found:
+   - Split block if oversized
+   - Mark as allocated
+   - Update nextfit pointer
+4. If not found and not looped:
+   - Wrap to beginning
+   - Repeat search
+5. Return pointer or NULL
+```
+
+#### Deallocation with Coalescing
+
+```c
+1. Mark block as free
+2. Scan forward for adjacent free blocks
+3. Merge consecutive free blocks:
+   - Update size metadata
+   - Remove intermediate headers
+4. Update heap structure
+```
+
+---
+
+## Academic Context
+
+This project was developed as part of the **LINFO1252 - Systèmes informatiques** course at **UCLouvain**.
+
+**Author:**
+- Mathis Delsart
+- Anthony Guerrero Gurriaran
