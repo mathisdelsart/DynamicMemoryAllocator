@@ -150,8 +150,6 @@ memory-allocator/
 
 ---
 
----
-
 ## Authors
 
 <div align="center">
